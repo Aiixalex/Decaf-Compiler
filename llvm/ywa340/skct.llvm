@@ -1,0 +1,45 @@
+; ModuleID = 'foo'
+source_filename = "DecafComp"
+
+@globalstring = private unnamed_addr constant [4 x i8] c"foo\00"
+@globalstring.1 = private unnamed_addr constant [5 x i8] c"skct\00"
+
+declare void @print_int(i32)
+
+declare void @print_string(i8*)
+
+define i1 @foo() {
+entry:
+  call void @print_string(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @globalstring, i32 0, i32 0))
+  call void @print_string(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @globalstring.1, i32 0, i32 0))
+  ret i1 false
+  ret i1 false
+}
+
+define i32 @main() {
+entry:
+  %flag = alloca i1
+  store i1 false, i1* %flag
+  br i1 false, label %skctend, label %noskct
+
+noskct:                                           ; preds = %entry
+  %calltmp = call i1 @foo()
+  %nottmp = xor i1 %calltmp, true
+  br i1 %nottmp, label %noskct1, label %skctend2
+
+skctend:                                          ; preds = %skctend2, %entry
+  %phival4 = phi i1 [ false, %entry ], [ %phival, %skctend2 ]
+  store i1 %phival4, i1* %flag
+  %flag5 = load i1, i1* %flag
+  %zexttmp = zext i1 %flag5 to i32
+  call void @print_int(i32 %zexttmp)
+  ret i32 0
+
+noskct1:                                          ; preds = %noskct
+  %calltmp3 = call i1 @foo()
+  br label %skctend2
+
+skctend2:                                         ; preds = %noskct1, %noskct
+  %phival = phi i1 [ %nottmp, %noskct ], [ %calltmp3, %noskct1 ]
+  br label %skctend
+}

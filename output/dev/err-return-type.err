@@ -1,0 +1,40 @@
+output prefix: llvm/dev/err-return-type
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... ok
+; ModuleID = 'returnvalue'
+source_filename = "DecafComp"
+
+define i1 @foo() {
+entry:
+  ret i32 10
+  ret i1 false
+}
+
+define i32 @main() {
+entry:
+  ret i32 0
+}
+assembling to bitcode:/usr/lib/llvm-7/bin/llvm-as "llvm/dev/err-return-type.llvm" -o "llvm/dev/err-return-type.llvm.bc" ... non-zero return value (1)
+/usr/lib/llvm-7/bin/llvm-as: llvm/dev/err-return-type.llvm:6:7: error: value doesn't match function result type 'i1'
+  ret i32 10
+      ^
+converting to native code:/usr/lib/llvm-7/bin/llc "llvm/dev/err-return-type.llvm.bc" -o "llvm/dev/err-return-type.llvm.s" ... non-zero return value (1)
+/usr/lib/llvm-7/bin/llc: error: /usr/lib/llvm-7/bin/llc: llvm/dev/err-return-type.llvm.bc: error: Could not open input file: No such file or directory
+linking:clang -o "llvm/dev/err-return-type.llvm.exec" "llvm/dev/err-return-type.llvm.s" "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c" ... non-zero return value (1)
+clang: error: no such file or directory: 'llvm/dev/err-return-type.llvm.s'
+running:llvm/dev/err-return-type.llvm.exec ... Traceback (most recent call last):
+  File "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/llvm-run", line 172, in <module>
+    result &= run("running", "%s.llvm.exec" % (out_prefix), ".run", None, out_prefix)
+  File "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/llvm-run", line 90, in run
+    retval = subprocess.call(shlex.split(cmd), stdin=infile, stdout=outoutfile, stderr=outerrfile)
+  File "/usr/lib/python3.7/subprocess.py", line 323, in call
+    with Popen(*popenargs, **kwargs) as p:
+  File "/usr/lib/python3.7/subprocess.py", line 775, in __init__
+    restore_signals, start_new_session)
+  File "/usr/lib/python3.7/subprocess.py", line 1522, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'llvm/dev/err-return-type.llvm.exec': 'llvm/dev/err-return-type.llvm.exec'

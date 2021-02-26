@@ -1,0 +1,57 @@
+output prefix: llvm/test/returnchecks
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... ok
+; ModuleID = 'bitshift_small'
+source_filename = "DecafComp"
+
+declare void @print_int(i32)
+
+declare void @print_string(i8*)
+
+define void @main() {
+entry:
+  %calltmp = call i32 @foo1()
+  call void @print_int(i32 %calltmp)
+  ret void
+}
+
+define i32 @foo1() {
+entry:
+  %calltmp = call i32 @foo2()
+  %addtmp = add i32 1, %calltmp
+  ret i32 %addtmp
+  ret i32 0
+}
+
+define i32 @foo2() {
+entry:
+  %calltmp = call i1 @foo3()
+  %nottmp = xor i1 %calltmp, true
+  %zexttmp = zext i1 %nottmp to i32
+  %calltmp1 = call i32 @intcast(i32 %zexttmp)
+  ret i32 %calltmp1
+  ret i32 0
+}
+
+define i1 @foo3() {
+entry:
+  ret i1 false
+  ret i1 false
+}
+
+define i32 @intcast(i32 %x) {
+entry:
+  %x1 = alloca i32
+  store i32 %x, i32* %x1
+  %x2 = load i32, i32* %x1
+  ret i32 %x2
+  ret i32 0
+}
+assembling to bitcode:/usr/lib/llvm-7/bin/llvm-as "llvm/test/returnchecks.llvm" -o "llvm/test/returnchecks.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-7/bin/llc "llvm/test/returnchecks.llvm.bc" -o "llvm/test/returnchecks.llvm.s" ... ok
+linking:clang -o "llvm/test/returnchecks.llvm.exec" "llvm/test/returnchecks.llvm.s" "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c" ... ok
+running:llvm/test/returnchecks.llvm.exec ... non-zero return value (64)

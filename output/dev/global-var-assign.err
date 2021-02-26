@@ -1,0 +1,30 @@
+output prefix: llvm/dev/global-var-assign
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... ok
+; ModuleID = 'C'
+source_filename = "DecafComp"
+
+@foo = internal global i32 42
+@bar = internal global i1 true
+
+declare void @print_int(i32)
+
+declare void @print_string(i8*)
+
+define i32 @main() {
+entry:
+  %foo = load i32, i32* @foo
+  call void @print_int(i32 %foo)
+  %bar = load i1, i1* @bar
+  %zexttmp = zext i1 %bar to i32
+  call void @print_int(i32 %zexttmp)
+  ret i32 0
+}
+assembling to bitcode:/usr/lib/llvm-7/bin/llvm-as "llvm/dev/global-var-assign.llvm" -o "llvm/dev/global-var-assign.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-7/bin/llc "llvm/dev/global-var-assign.llvm.bc" -o "llvm/dev/global-var-assign.llvm.s" ... ok
+linking:clang -o "llvm/dev/global-var-assign.llvm.exec" "llvm/dev/global-var-assign.llvm.s" "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c" ... ok
+running:llvm/dev/global-var-assign.llvm.exec ... ok

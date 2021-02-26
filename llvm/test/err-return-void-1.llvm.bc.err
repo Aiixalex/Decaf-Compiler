@@ -1,0 +1,3 @@
+/usr/lib/llvm-7/bin/llvm-as: llvm/test/err-return-void-1.llvm:6:7: error: value doesn't match function result type 'void'
+  ret i32 10
+      ^

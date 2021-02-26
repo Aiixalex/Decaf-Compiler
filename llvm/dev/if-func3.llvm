@@ -1,0 +1,13 @@
+; ModuleID = 'C'
+source_filename = "Test"
+
+define i1 @f() {
+entry:
+  ret i32 1
+  ret i1 false
+}
+
+define void @main() {
+entry:
+  ret void
+}

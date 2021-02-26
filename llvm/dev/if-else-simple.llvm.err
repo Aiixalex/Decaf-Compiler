@@ -1,0 +1,24 @@
+; ModuleID = 'C'
+source_filename = "DecafComp"
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  br label %ifstart
+
+ifstart:                                          ; preds = %entry
+  br i1 false, label %iftrue, label %iffalse
+
+iftrue:                                           ; preds = %ifstart
+  call void @print_int(i32 1)
+  br label %end
+
+iffalse:                                          ; preds = %ifstart
+  call void @print_int(i32 4)
+  br label %end
+
+end:                                              ; preds = %iffalse, %iftrue
+  call void @print_int(i32 2)
+  ret i32 0
+}

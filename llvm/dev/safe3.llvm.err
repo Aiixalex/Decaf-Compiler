@@ -1,0 +1,23 @@
+; ModuleID = 'safe'
+source_filename = "DecafComp"
+
+@globalstring = private unnamed_addr constant [14 x i8] c"Hello, world!\00"
+
+declare void @print_string(i8*)
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  br label %ifstart
+
+ifstart:                                          ; preds = %entry
+  br i1 true, label %iftrue, label %iffalse
+
+iftrue:                                           ; preds = %ifstart
+  call void @print_string(i8* getelementptr inbounds ([14 x i8], [14 x i8]* @globalstring, i32 0, i32 0))
+  br label %iffalse
+
+iffalse:                                          ; preds = %iftrue, %ifstart
+  ret i32 0
+}

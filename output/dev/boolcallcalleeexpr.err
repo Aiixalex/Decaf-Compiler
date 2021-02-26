@@ -1,0 +1,48 @@
+output prefix: llvm/dev/boolcallcalleeexpr
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... ok
+; ModuleID = 'Test'
+source_filename = "DecafComp"
+
+declare void @print_int(i32)
+
+define void @test(i1 %a) {
+entry:
+  %a1 = alloca i1
+  store i1 %a, i1* %a1
+  br label %ifstart
+
+ifstart:                                          ; preds = %entry
+  %a2 = load i1, i1* %a1
+  br i1 %a2, label %iftrue, label %iffalse
+
+iftrue:                                           ; preds = %ifstart
+  %a3 = load i1, i1* %a1
+  br i1 %a3, label %skctend, label %noskct
+
+iffalse:                                          ; preds = %skctend, %ifstart
+  ret void
+
+noskct:                                           ; preds = %iftrue
+  br label %skctend
+
+skctend:                                          ; preds = %noskct, %iftrue
+  %phival = phi i1 [ %a3, %iftrue ], [ false, %noskct ]
+  %zexttmp = zext i1 %phival to i32
+  call void @print_int(i32 %zexttmp)
+  br label %iffalse
+}
+
+define i32 @main() {
+entry:
+  call void @test(i1 true)
+  ret i32 0
+}
+assembling to bitcode:/usr/lib/llvm-7/bin/llvm-as "llvm/dev/boolcallcalleeexpr.llvm" -o "llvm/dev/boolcallcalleeexpr.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-7/bin/llc "llvm/dev/boolcallcalleeexpr.llvm.bc" -o "llvm/dev/boolcallcalleeexpr.llvm.s" ... ok
+linking:clang -o "llvm/dev/boolcallcalleeexpr.llvm.exec" "llvm/dev/boolcallcalleeexpr.llvm.s" "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c" ... ok
+running:llvm/dev/boolcallcalleeexpr.llvm.exec ... ok

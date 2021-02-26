@@ -1,0 +1,18 @@
+; ModuleID = 'C'
+source_filename = "DecafComp"
+
+define i32 @main() {
+entry:
+  ret i32 0
+}
+
+define void @foo() {
+entry:
+  call void @bar()
+  ret void
+}
+
+define void @bar() {
+entry:
+  ret void
+}

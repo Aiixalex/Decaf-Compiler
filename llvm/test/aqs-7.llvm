@@ -1,0 +1,11 @@
+; ModuleID = 'QuickSort'
+source_filename = "Test"
+
+define void @quickSort(i32 %left, i32 %right) {
+entry:
+  %left1 = alloca i32
+  store i32 %left, i32* %left1
+  %right2 = alloca i32
+  store i32 %right, i32* %right2
+  ret void
+}

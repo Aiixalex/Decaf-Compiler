@@ -1,0 +1,9 @@
+output prefix: llvm/test/err-scoping-4
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... non-zero return value (-6)
+decafcomp: /usr/lib/llvm-7/include/llvm/Support/Casting.h:255: typename cast_retty<X, Y *>::ret_type llvm::cast(Y *) [X = llvm::FunctionType, Y = llvm::Type]: Assertion `isa<X>(Val) && "cast<Ty>() argument of incompatible type!"' failed.
+codegen failed

@@ -1,0 +1,60 @@
+output prefix: llvm/test/falsetrue
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... ok
+; ModuleID = 'FT'
+source_filename = "DecafComp"
+
+@FT = global [32 x i32] zeroinitializer
+@globalstring = private unnamed_addr constant [7 x i8] c"output\00"
+
+declare void @print_string(i8*)
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  call void @print_string(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @globalstring, i32 0, i32 0))
+  br label %ifstart
+
+ifstart:                                          ; preds = %entry
+  br i1 false, label %iftrue, label %iffalse
+
+iftrue:                                           ; preds = %ifstart
+  ret i32 0
+  br label %end
+
+iffalse:                                          ; preds = %ifstart
+  ret i32 0
+  br label %end
+
+end:                                              ; preds = %iffalse, %iftrue
+  %x = alloca i32
+  store i32 0, i32* %x
+  store i32 3, i32* %x
+  %x1 = load i32, i32* %x
+  %subtmp = sub i32 %x1, 32
+  store i32 %subtmp, i32* %x
+  %loadtmp = load i32, i32* getelementptr inbounds ([32 x i32], [32 x i32]* @FT, i32 0, i32 0)
+  %addtmp = add i32 %loadtmp, 3
+  store i32 %addtmp, i32* getelementptr inbounds ([32 x i32], [32 x i32]* @FT, i32 0, i32 0)
+  %loadtmp2 = load i32, i32* getelementptr inbounds ([32 x i32], [32 x i32]* @FT, i32 0, i32 1)
+  %divtmp = sdiv i32 %loadtmp2, 6
+  store i32 %divtmp, i32* getelementptr inbounds ([32 x i32], [32 x i32]* @FT, i32 0, i32 1)
+  ret i32 1
+  %loadtmp3 = load i32, i32* getelementptr inbounds ([32 x i32], [32 x i32]* @FT, i32 0, i32 2)
+  %modtmp = srem i32 %loadtmp3, 3
+  store i32 %modtmp, i32* getelementptr inbounds ([32 x i32], [32 x i32]* @FT, i32 0, i32 2)
+  %x4 = load i32, i32* %x
+  %loadtmp5 = load i32, i32* getelementptr inbounds ([32 x i32], [32 x i32]* @FT, i32 0, i32 2)
+  %modtmp6 = srem i32 %x4, %loadtmp5
+  store i32 %modtmp6, i32* getelementptr inbounds ([32 x i32], [32 x i32]* @FT, i32 0, i32 6)
+  ret i32 0
+}
+assembling to bitcode:/usr/lib/llvm-7/bin/llvm-as "llvm/test/falsetrue.llvm" -o "llvm/test/falsetrue.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-7/bin/llc "llvm/test/falsetrue.llvm.bc" -o "llvm/test/falsetrue.llvm.s" ... ok
+linking:clang -o "llvm/test/falsetrue.llvm.exec" "llvm/test/falsetrue.llvm.s" "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c" ... ok
+running:llvm/test/falsetrue.llvm.exec ... ok

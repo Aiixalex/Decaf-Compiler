@@ -1,0 +1,63 @@
+output prefix: llvm/test/xkcd
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... ok
+; ModuleID = 'xkcd'
+source_filename = "DecafComp"
+
+declare void @print_int(i32)
+
+declare void @print_string(i8*)
+
+define i32 @main() {
+entry:
+  %calltmp = call i32 @d()
+  %calltmp1 = call i32 @c(i32 %calltmp)
+  %calltmp2 = call i32 @k(i32 %calltmp1)
+  %calltmp3 = call i32 @x(i32 %calltmp2)
+  call void @print_int(i32 %calltmp3)
+  ret i32 0
+}
+
+define i32 @x(i32 %a) {
+entry:
+  %a1 = alloca i32
+  store i32 %a, i32* %a1
+  %a2 = load i32, i32* %a1
+  %multmp = mul i32 %a2, 2
+  ret i32 %multmp
+  ret i32 0
+}
+
+define i32 @k(i32 %a) {
+entry:
+  %a1 = alloca i32
+  store i32 %a, i32* %a1
+  %a2 = load i32, i32* %a1
+  %multmp = mul i32 %a2, 3
+  ret i32 %multmp
+  ret i32 0
+}
+
+define i32 @c(i32 %a) {
+entry:
+  %a1 = alloca i32
+  store i32 %a, i32* %a1
+  %a2 = load i32, i32* %a1
+  %addtmp = add i32 %a2, 4
+  ret i32 %addtmp
+  ret i32 0
+}
+
+define i32 @d() {
+entry:
+  ret i32 3
+  ret i32 0
+}
+assembling to bitcode:/usr/lib/llvm-7/bin/llvm-as "llvm/test/xkcd.llvm" -o "llvm/test/xkcd.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-7/bin/llc "llvm/test/xkcd.llvm.bc" -o "llvm/test/xkcd.llvm.s" ... ok
+linking:clang -o "llvm/test/xkcd.llvm.exec" "llvm/test/xkcd.llvm.s" "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c" ... ok
+running:llvm/test/xkcd.llvm.exec ... ok

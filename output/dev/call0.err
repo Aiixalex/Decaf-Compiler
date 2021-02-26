@@ -1,0 +1,27 @@
+output prefix: llvm/dev/call0
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... ok
+; ModuleID = 'Test'
+source_filename = "DecafComp"
+
+declare void @print_int(i32)
+
+define void @test() {
+entry:
+  call void @print_int(i32 0)
+  ret void
+}
+
+define i32 @main() {
+entry:
+  call void @test()
+  ret i32 0
+}
+assembling to bitcode:/usr/lib/llvm-7/bin/llvm-as "llvm/dev/call0.llvm" -o "llvm/dev/call0.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-7/bin/llc "llvm/dev/call0.llvm.bc" -o "llvm/dev/call0.llvm.s" ... ok
+linking:clang -o "llvm/dev/call0.llvm.exec" "llvm/dev/call0.llvm.s" "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c" ... ok
+running:llvm/dev/call0.llvm.exec ... ok

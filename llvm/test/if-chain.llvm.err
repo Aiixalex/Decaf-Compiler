@@ -1,0 +1,113 @@
+; ModuleID = 'C'
+source_filename = "DecafComp"
+
+@globalstring = private unnamed_addr constant [2 x i8] c"O\00"
+@globalstring.1 = private unnamed_addr constant [3 x i8] c"NO\00"
+@globalstring.2 = private unnamed_addr constant [2 x i8] c"K\00"
+
+declare void @print_string(i8*)
+
+define i32 @main() {
+entry:
+  br label %ifstart
+
+ifstart:                                          ; preds = %entry
+  br i1 true, label %noskct7, label %skctend8
+
+iftrue:                                           ; preds = %skctend
+  br label %ifstart16
+
+iffalse:                                          ; preds = %iffalse18, %skctend
+  call void @print_string(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @globalstring.2, i32 0, i32 0))
+  ret i32 0
+
+noskct:                                           ; preds = %skctend2
+  br label %skctend
+
+skctend:                                          ; preds = %noskct, %skctend2
+  %phival15 = phi i1 [ %phival14, %skctend2 ], [ true, %noskct ]
+  br i1 %phival15, label %iftrue, label %iffalse
+
+noskct1:                                          ; preds = %skctend4
+  br label %skctend2
+
+skctend2:                                         ; preds = %noskct1, %skctend4
+  %phival14 = phi i1 [ %phival13, %skctend4 ], [ false, %noskct1 ]
+  br i1 %phival14, label %skctend, label %noskct
+
+noskct3:                                          ; preds = %skctend6
+  br i1 true, label %noskct10, label %skctend11
+
+skctend4:                                         ; preds = %skctend11, %skctend6
+  %phival13 = phi i1 [ %phival9, %skctend6 ], [ %phival12, %skctend11 ]
+  br i1 %phival13, label %skctend2, label %noskct1
+
+noskct5:                                          ; preds = %skctend8
+  br label %skctend6
+
+skctend6:                                         ; preds = %noskct5, %skctend8
+  %phival9 = phi i1 [ %phival, %skctend8 ], [ false, %noskct5 ]
+  br i1 %phival9, label %skctend4, label %noskct3
+
+noskct7:                                          ; preds = %ifstart
+  br label %skctend8
+
+skctend8:                                         ; preds = %noskct7, %ifstart
+  %phival = phi i1 [ true, %ifstart ], [ true, %noskct7 ]
+  br i1 %phival, label %noskct5, label %skctend6
+
+noskct10:                                         ; preds = %noskct3
+  br label %skctend11
+
+skctend11:                                        ; preds = %noskct10, %noskct3
+  %phival12 = phi i1 [ true, %noskct3 ], [ false, %noskct10 ]
+  br label %skctend4
+
+ifstart16:                                        ; preds = %iftrue
+  br i1 false, label %skctend20, label %noskct19
+
+iftrue17:                                         ; preds = %skctend20
+  call void @print_string(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @globalstring, i32 0, i32 0))
+  br label %ifstart25
+
+iffalse18:                                        ; preds = %iffalse27, %skctend20
+  br label %iffalse
+
+noskct19:                                         ; preds = %ifstart16
+  br i1 true, label %noskct21, label %skctend22
+
+skctend20:                                        ; preds = %skctend22, %ifstart16
+  %phival24 = phi i1 [ false, %ifstart16 ], [ %phival23, %skctend22 ]
+  br i1 %phival24, label %iftrue17, label %iffalse18
+
+noskct21:                                         ; preds = %noskct19
+  br label %skctend22
+
+skctend22:                                        ; preds = %noskct21, %noskct19
+  %phival23 = phi i1 [ true, %noskct19 ], [ true, %noskct21 ]
+  br label %skctend20
+
+ifstart25:                                        ; preds = %iftrue17
+  br i1 true, label %noskct30, label %skctend31
+
+iftrue26:                                         ; preds = %skctend29
+  call void @print_string(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @globalstring.1, i32 0, i32 0))
+  br label %iffalse27
+
+iffalse27:                                        ; preds = %iftrue26, %skctend29
+  br label %iffalse18
+
+noskct28:                                         ; preds = %skctend31
+  br label %skctend29
+
+skctend29:                                        ; preds = %noskct28, %skctend31
+  %phival33 = phi i1 [ %phival32, %skctend31 ], [ false, %noskct28 ]
+  br i1 %phival33, label %iftrue26, label %iffalse27
+
+noskct30:                                         ; preds = %ifstart25
+  br label %skctend31
+
+skctend31:                                        ; preds = %noskct30, %ifstart25
+  %phival32 = phi i1 [ true, %ifstart25 ], [ false, %noskct30 ]
+  br i1 %phival32, label %skctend29, label %noskct28
+}

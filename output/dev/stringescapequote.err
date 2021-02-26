@@ -1,0 +1,23 @@
+output prefix: llvm/dev/stringescapequote
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... ok
+; ModuleID = 'Test'
+source_filename = "DecafComp"
+
+@globalstring = private unnamed_addr constant [2 x i8] c"\22\00"
+
+declare void @print_string(i8*)
+
+define i32 @main() {
+entry:
+  call void @print_string(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @globalstring, i32 0, i32 0))
+  ret i32 0
+}
+assembling to bitcode:/usr/lib/llvm-7/bin/llvm-as "llvm/dev/stringescapequote.llvm" -o "llvm/dev/stringescapequote.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-7/bin/llc "llvm/dev/stringescapequote.llvm.bc" -o "llvm/dev/stringescapequote.llvm.s" ... ok
+linking:clang -o "llvm/dev/stringescapequote.llvm.exec" "llvm/dev/stringescapequote.llvm.s" "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c" ... ok
+running:llvm/dev/stringescapequote.llvm.exec ... ok

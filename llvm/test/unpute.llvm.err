@@ -1,0 +1,43 @@
+; ModuleID = 'reach'
+source_filename = "DecafComp"
+
+@globalstring = private unnamed_addr constant [7 x i8] c"hello\0A\00"
+
+declare void @print_string(i8*)
+
+declare void @print_int(i32)
+
+define i32 @five() {
+entry:
+  ret i32 5
+  %calltmp = call i32 @five()
+  ret i32 %calltmp
+  ret i32 0
+}
+
+define i32 @main() {
+entry:
+  %x = alloca i32
+  store i32 0, i32* %x
+  call void @print_string(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @globalstring, i32 0, i32 0))
+  ret i32 0
+  store i32 5, i32* %x
+  br label %whilestart
+
+whilestart:                                       ; preds = %whiletrue, %whiletrue, %entry
+  %x1 = load i32, i32* %x
+  %gttmp = icmp sgt i32 %x1, 0
+  br i1 %gttmp, label %whiletrue, label %whileend
+
+whiletrue:                                        ; preds = %whilestart
+  br label %whilestart
+  %calltmp = call i32 @five()
+  %divtmp = sdiv i32 %calltmp, 32
+  store i32 %divtmp, i32* %x
+  br label %whilestart
+
+whileend:                                         ; preds = %whilestart
+  %x2 = load i32, i32* %x
+  ret i32 %x2
+  ret i32 0
+}

@@ -1,0 +1,32 @@
+; ModuleID = 'variableoverride'
+source_filename = "DecafComp"
+
+declare void @print_int(i32)
+
+declare void @print_string(i8*)
+
+define i32 @main() {
+entry:
+  %main = alloca i32
+  store i32 0, i32* %main
+  store i32 2, i32* %main
+  br label %ifstart
+
+ifstart:                                          ; preds = %entry
+  %main1 = load i32, i32* %main
+  %lttmp = icmp slt i32 %main1, 3
+  br i1 %lttmp, label %iftrue, label %iffalse
+
+iftrue:                                           ; preds = %ifstart
+  %main2 = alloca i1
+  store i1 false, i1* %main2
+  %main3 = load i1, i1* %main2
+  %nottmp = xor i1 %main3, true
+  store i1 %nottmp, i1* %main2
+  br label %iffalse
+
+iffalse:                                          ; preds = %iftrue, %ifstart
+  %main4 = load i32, i32* %main
+  call void @print_int(i32 %main4)
+  ret i32 0
+}

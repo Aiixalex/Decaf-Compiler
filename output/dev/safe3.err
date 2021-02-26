@@ -1,0 +1,34 @@
+output prefix: llvm/dev/safe3
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... ok
+; ModuleID = 'safe'
+source_filename = "DecafComp"
+
+@globalstring = private unnamed_addr constant [14 x i8] c"Hello, world!\00"
+
+declare void @print_string(i8*)
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  br label %ifstart
+
+ifstart:                                          ; preds = %entry
+  br i1 true, label %iftrue, label %iffalse
+
+iftrue:                                           ; preds = %ifstart
+  call void @print_string(i8* getelementptr inbounds ([14 x i8], [14 x i8]* @globalstring, i32 0, i32 0))
+  br label %iffalse
+
+iffalse:                                          ; preds = %iftrue, %ifstart
+  ret i32 0
+}
+assembling to bitcode:/usr/lib/llvm-7/bin/llvm-as "llvm/dev/safe3.llvm" -o "llvm/dev/safe3.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-7/bin/llc "llvm/dev/safe3.llvm.bc" -o "llvm/dev/safe3.llvm.s" ... ok
+linking:clang -o "llvm/dev/safe3.llvm.exec" "llvm/dev/safe3.llvm.s" "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c" ... ok
+running:llvm/dev/safe3.llvm.exec ... ok

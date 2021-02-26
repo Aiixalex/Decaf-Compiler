@@ -1,0 +1,25 @@
+output prefix: llvm/dev/global-int-def
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... ok
+; ModuleID = 'C'
+source_filename = "DecafComp"
+
+@foo = internal global i32 0
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  store i32 3, i32* @foo
+  %foo = load i32, i32* @foo
+  call void @print_int(i32 %foo)
+  ret i32 0
+}
+assembling to bitcode:/usr/lib/llvm-7/bin/llvm-as "llvm/dev/global-int-def.llvm" -o "llvm/dev/global-int-def.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-7/bin/llc "llvm/dev/global-int-def.llvm.bc" -o "llvm/dev/global-int-def.llvm.s" ... ok
+linking:clang -o "llvm/dev/global-int-def.llvm.exec" "llvm/dev/global-int-def.llvm.s" "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c" ... ok
+running:llvm/dev/global-int-def.llvm.exec ... ok

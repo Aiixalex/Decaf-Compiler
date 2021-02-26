@@ -1,0 +1,36 @@
+output prefix: llvm/test/nametest
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... ok
+; ModuleID = 'nametest'
+source_filename = "DecafComp"
+
+declare void @print_string(i8*)
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  %_ = alloca i32
+  store i32 0, i32* %_
+  %__ = alloca i32
+  store i32 0, i32* %__
+  %___ = alloca i32
+  store i32 0, i32* %___
+  store i32 4, i32* %_
+  store i32 3, i32* %__
+  %_1 = load i32, i32* %_
+  %__2 = load i32, i32* %__
+  %addtmp = add i32 %_1, %__2
+  store i32 %addtmp, i32* %___
+  %___3 = load i32, i32* %___
+  call void @print_int(i32 %___3)
+  ret i32 0
+}
+assembling to bitcode:/usr/lib/llvm-7/bin/llvm-as "llvm/test/nametest.llvm" -o "llvm/test/nametest.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-7/bin/llc "llvm/test/nametest.llvm.bc" -o "llvm/test/nametest.llvm.s" ... ok
+linking:clang -o "llvm/test/nametest.llvm.exec" "llvm/test/nametest.llvm.s" "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c" ... ok
+running:llvm/test/nametest.llvm.exec ... ok

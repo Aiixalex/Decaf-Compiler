@@ -1,0 +1,61 @@
+output prefix: llvm/dev/unreachable
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... ok
+; ModuleID = 'reach'
+source_filename = "DecafComp"
+
+@globalstring = private unnamed_addr constant [7 x i8] c"hello\0A\00"
+
+declare void @print_string(i8*)
+
+declare void @print_int(i32)
+
+define i32 @five() {
+entry:
+  ret i32 5
+  %calltmp = call i32 @five()
+  ret i32 %calltmp
+  ret i32 0
+}
+
+define i32 @main() {
+entry:
+  %x = alloca i32
+  store i32 0, i32* %x
+  call void @print_string(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @globalstring, i32 0, i32 0))
+  ret i32 0
+  store i32 5, i32* %x
+  store i32 0, i32* %x
+  br label %forstart
+
+forstart:                                         ; preds = %fornext, %entry
+  %x1 = load i32, i32* %x
+  %geqtmp = icmp sge i32 %x1, 0
+  br i1 %geqtmp, label %fortrue, label %forend
+
+fortrue:                                          ; preds = %forstart
+  br label %fornext
+  %calltmp = call i32 @five()
+  %divtmp = sdiv i32 %calltmp, 32
+  store i32 %divtmp, i32* %x
+  br label %fornext
+
+fornext:                                          ; preds = %fortrue, %fortrue
+  %x2 = load i32, i32* %x
+  %addtmp = add i32 %x2, 1
+  store i32 %addtmp, i32* %x
+  br label %forstart
+
+forend:                                           ; preds = %forstart
+  %x3 = load i32, i32* %x
+  ret i32 %x3
+  ret i32 0
+}
+assembling to bitcode:/usr/lib/llvm-7/bin/llvm-as "llvm/dev/unreachable.llvm" -o "llvm/dev/unreachable.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-7/bin/llc "llvm/dev/unreachable.llvm.bc" -o "llvm/dev/unreachable.llvm.s" ... ok
+linking:clang -o "llvm/dev/unreachable.llvm.exec" "llvm/dev/unreachable.llvm.s" "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c" ... ok
+running:llvm/dev/unreachable.llvm.exec ... ok

@@ -1,0 +1,131 @@
+output prefix: llvm/test/sequence
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... ok
+; ModuleID = 'byone'
+source_filename = "DecafComp"
+
+@globalstring = private unnamed_addr constant [7 x i8] c"hello\0A\00"
+@globalstring.1 = private unnamed_addr constant [2 x i8] c"\0A\00"
+
+declare void @print_string(i8*)
+
+declare void @print_int(i32)
+
+define i32 @sqrt(i32 %a_nInput) {
+entry:
+  %a_nInput1 = alloca i32
+  store i32 %a_nInput, i32* %a_nInput1
+  %op = alloca i32
+  store i32 0, i32* %op
+  %res = alloca i32
+  store i32 0, i32* %res
+  %one = alloca i32
+  store i32 0, i32* %one
+  %a_nInput2 = load i32, i32* %a_nInput1
+  store i32 %a_nInput2, i32* %op
+  store i32 0, i32* %res
+  store i32 1073741824, i32* %one
+  br label %whilestart
+
+whilestart:                                       ; preds = %iffalse, %entry
+  %one3 = load i32, i32* %one
+  %neqtmp = icmp ne i32 %one3, 0
+  br i1 %neqtmp, label %whiletrue, label %whileend
+
+whiletrue:                                        ; preds = %whilestart
+  br label %ifstart
+
+whileend:                                         ; preds = %whilestart
+  %res17 = load i32, i32* %res
+  ret i32 %res17
+  ret i32 0
+
+ifstart:                                          ; preds = %whiletrue
+  %op4 = load i32, i32* %op
+  %res5 = load i32, i32* %res
+  %one6 = load i32, i32* %one
+  %addtmp = add i32 %res5, %one6
+  %geqtmp = icmp sge i32 %op4, %addtmp
+  br i1 %geqtmp, label %iftrue, label %iffalse
+
+iftrue:                                           ; preds = %ifstart
+  %op7 = load i32, i32* %op
+  %res8 = load i32, i32* %res
+  %one9 = load i32, i32* %one
+  %addtmp10 = add i32 %res8, %one9
+  %subtmp = sub i32 %op7, %addtmp10
+  store i32 %subtmp, i32* %op
+  %res11 = load i32, i32* %res
+  %one12 = load i32, i32* %one
+  %multmp = mul i32 2, %one12
+  %addtmp13 = add i32 %res11, %multmp
+  store i32 %addtmp13, i32* %res
+  br label %iffalse
+
+iffalse:                                          ; preds = %iftrue, %ifstart
+  %res14 = load i32, i32* %res
+  %rstmp = lshr i32 %res14, 1
+  store i32 %rstmp, i32* %res
+  %one15 = load i32, i32* %one
+  %rstmp16 = lshr i32 %one15, 2
+  store i32 %rstmp16, i32* %one
+  br label %whilestart
+}
+
+define i32 @main() {
+entry:
+  %x = alloca i32
+  store i32 0, i32* %x
+  call void @print_string(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @globalstring, i32 0, i32 0))
+  store i32 1, i32* %x
+  br label %forstart
+
+forstart:                                         ; preds = %fornext, %entry
+  %x1 = load i32, i32* %x
+  %lttmp = icmp slt i32 %x1, 20
+  br i1 %lttmp, label %fortrue, label %forend
+
+fortrue:                                          ; preds = %forstart
+  %a = alloca i32
+  store i32 0, i32* %a
+  %x2 = load i32, i32* %x
+  %multmp = mul i32 7, %x2
+  %x3 = load i32, i32* %x
+  %multmp4 = mul i32 %multmp, %x3
+  %addtmp = add i32 3, %multmp4
+  %x5 = load i32, i32* %x
+  %multmp6 = mul i32 2, %x5
+  %addtmp7 = add i32 1, %multmp6
+  %x8 = load i32, i32* %x
+  %multmp9 = mul i32 3, %x8
+  %x10 = load i32, i32* %x
+  %multmp11 = mul i32 %multmp9, %x10
+  %addtmp12 = add i32 %addtmp7, %multmp11
+  %calltmp = call i32 @sqrt(i32 %addtmp12)
+  %subtmp = sub i32 %addtmp, %calltmp
+  %x13 = load i32, i32* %x
+  %multmp14 = mul i32 2, %x13
+  %divtmp = sdiv i32 %subtmp, %multmp14
+  store i32 %divtmp, i32* %a
+  %a15 = load i32, i32* %a
+  call void @print_int(i32 %a15)
+  call void @print_string(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @globalstring.1, i32 0, i32 0))
+  br label %fornext
+
+fornext:                                          ; preds = %fortrue
+  %x16 = load i32, i32* %x
+  %addtmp17 = add i32 %x16, 1
+  store i32 %addtmp17, i32* %x
+  br label %forstart
+
+forend:                                           ; preds = %forstart
+  ret i32 0
+}
+assembling to bitcode:/usr/lib/llvm-7/bin/llvm-as "llvm/test/sequence.llvm" -o "llvm/test/sequence.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-7/bin/llc "llvm/test/sequence.llvm.bc" -o "llvm/test/sequence.llvm.s" ... ok
+linking:clang -o "llvm/test/sequence.llvm.exec" "llvm/test/sequence.llvm.s" "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c" ... ok
+running:llvm/test/sequence.llvm.exec ... ok

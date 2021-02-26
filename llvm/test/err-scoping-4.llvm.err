@@ -1,0 +1,1 @@
+decafcomp: /usr/lib/llvm-7/include/llvm/Support/Casting.h:255: typename cast_retty<X, Y *>::ret_type llvm::cast(Y *) [X = llvm::FunctionType, Y = llvm::Type]: Assertion `isa<X>(Val) && "cast<Ty>() argument of incompatible type!"' failed.

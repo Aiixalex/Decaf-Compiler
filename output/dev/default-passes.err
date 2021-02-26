@@ -1,0 +1,18 @@
+output prefix: llvm/dev/default-passes
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... ok
+; ModuleID = 'Foo'
+source_filename = "DecafComp"
+
+define i32 @main() {
+entry:
+  ret i32 0
+}
+assembling to bitcode:/usr/lib/llvm-7/bin/llvm-as "llvm/dev/default-passes.llvm" -o "llvm/dev/default-passes.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-7/bin/llc "llvm/dev/default-passes.llvm.bc" -o "llvm/dev/default-passes.llvm.s" ... ok
+linking:clang -o "llvm/dev/default-passes.llvm.exec" "llvm/dev/default-passes.llvm.s" "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c" ... ok
+running:llvm/dev/default-passes.llvm.exec ... ok

@@ -1,0 +1,41 @@
+output prefix: llvm/dev/if-simple
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... ok
+; ModuleID = 'C'
+source_filename = "DecafComp"
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  br label %ifstart
+
+ifstart:                                          ; preds = %entry
+  br i1 true, label %iftrue, label %iffalse
+
+iftrue:                                           ; preds = %ifstart
+  call void @print_int(i32 4)
+  br label %iffalse
+
+iffalse:                                          ; preds = %iftrue, %ifstart
+  br label %ifstart1
+
+ifstart1:                                         ; preds = %iffalse
+  br i1 false, label %iftrue2, label %iffalse3
+
+iftrue2:                                          ; preds = %ifstart1
+  call void @print_int(i32 13)
+  br label %iffalse3
+
+iffalse3:                                         ; preds = %iftrue2, %ifstart1
+  call void @print_int(i32 2)
+  ret i32 0
+}
+assembling to bitcode:/usr/lib/llvm-7/bin/llvm-as "llvm/dev/if-simple.llvm" -o "llvm/dev/if-simple.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-7/bin/llc "llvm/dev/if-simple.llvm.bc" -o "llvm/dev/if-simple.llvm.s" ... ok
+linking:clang -o "llvm/dev/if-simple.llvm.exec" "llvm/dev/if-simple.llvm.s" "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c" ... ok
+running:llvm/dev/if-simple.llvm.exec ... ok

@@ -1,0 +1,117 @@
+output prefix: llvm/test/breaktest
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... ok
+; ModuleID = 'breaktest'
+source_filename = "DecafComp"
+
+declare void @print_string(i8*)
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  %i = alloca i32
+  store i32 0, i32* %i
+  store i32 0, i32* %i
+  br label %forstart
+
+forstart:                                         ; preds = %fornext, %entry
+  %i1 = load i32, i32* %i
+  %lttmp = icmp slt i32 %i1, 20
+  br i1 %lttmp, label %fortrue, label %forend
+
+fortrue:                                          ; preds = %forstart
+  br label %ifstart
+
+fornext:                                          ; preds = %iffalse, %iftrue14
+  %i24 = load i32, i32* %i
+  %addtmp = add i32 %i24, 1
+  store i32 %addtmp, i32* %i
+  br label %forstart
+
+forend:                                           ; preds = %whileend, %iftrue14, %forstart
+  ret i32 0
+
+ifstart:                                          ; preds = %fortrue
+  %i2 = load i32, i32* %i
+  %gttmp = icmp sgt i32 %i2, 1
+  br i1 %gttmp, label %iftrue, label %iffalse
+
+iftrue:                                           ; preds = %ifstart
+  br label %ifstart3
+
+iffalse:                                          ; preds = %iffalse5, %ifstart
+  br label %fornext
+
+ifstart3:                                         ; preds = %iftrue
+  %i6 = load i32, i32* %i
+  %gttmp7 = icmp sgt i32 %i6, 2
+  br i1 %gttmp7, label %iftrue4, label %iffalse5
+
+iftrue4:                                          ; preds = %ifstart3
+  br label %ifstart8
+
+iffalse5:                                         ; preds = %iffalse10, %ifstart3
+  br label %iffalse
+
+ifstart8:                                         ; preds = %iftrue4
+  %i11 = load i32, i32* %i
+  %gttmp12 = icmp sgt i32 %i11, 3
+  br i1 %gttmp12, label %iftrue9, label %iffalse10
+
+iftrue9:                                          ; preds = %ifstart8
+  br label %ifstart13
+
+iffalse10:                                        ; preds = %end, %ifstart8
+  br label %iffalse5
+
+ifstart13:                                        ; preds = %iftrue9
+  %i16 = load i32, i32* %i
+  %lttmp17 = icmp slt i32 %i16, 10
+  br i1 %lttmp17, label %iftrue14, label %iffalse15
+
+iftrue14:                                         ; preds = %ifstart13
+  br label %fornext
+  call void @print_int(i32 3)
+  br label %forend
+  br label %end
+
+iffalse15:                                        ; preds = %ifstart13
+  br label %ifstart18
+
+end:                                              ; preds = %iffalse20, %iftrue14
+  br label %iffalse10
+
+ifstart18:                                        ; preds = %iffalse15
+  %i21 = load i32, i32* %i
+  %lttmp22 = icmp slt i32 %i21, 15
+  br i1 %lttmp22, label %iftrue19, label %iffalse20
+
+iftrue19:                                         ; preds = %ifstart18
+  br label %whilestart
+
+iffalse20:                                        ; preds = %whileend, %ifstart18
+  br label %end
+
+whilestart:                                       ; preds = %whiletrue, %iftrue19
+  br i1 true, label %whiletrue, label %whileend
+
+whiletrue:                                        ; preds = %whilestart
+  br label %whileend
+  br label %whileend
+  br label %whilestart
+
+whileend:                                         ; preds = %whiletrue, %whiletrue, %whilestart
+  %i23 = load i32, i32* %i
+  call void @print_int(i32 %i23)
+  br label %forend
+  br label %iffalse20
+}
+assembling to bitcode:/usr/lib/llvm-7/bin/llvm-as "llvm/test/breaktest.llvm" -o "llvm/test/breaktest.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-7/bin/llc "llvm/test/breaktest.llvm.bc" -o "llvm/test/breaktest.llvm.s" ... ok
+linking:clang -o "llvm/test/breaktest.llvm.exec" "llvm/test/breaktest.llvm.s" "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c" ... ok
+running:llvm/test/breaktest.llvm.exec ... ok

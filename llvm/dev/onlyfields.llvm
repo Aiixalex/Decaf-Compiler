@@ -1,0 +1,4 @@
+; ModuleID = 'QuickSort'
+source_filename = "DecafComp"
+
+@x = internal global i32 0

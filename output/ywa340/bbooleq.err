@@ -1,0 +1,84 @@
+output prefix: llvm/ywa340/bbooleq
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... ok
+; ModuleID = 'Test'
+source_filename = "DecafComp"
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  %a = alloca i1
+  store i1 false, i1* %a
+  %b = alloca i1
+  store i1 false, i1* %b
+  %c = alloca i1
+  store i1 false, i1* %c
+  %d = alloca i1
+  store i1 false, i1* %d
+  store i1 true, i1* %a
+  store i1 false, i1* %b
+  store i1 false, i1* %c
+  store i1 true, i1* %d
+  br label %ifstart
+
+ifstart:                                          ; preds = %entry
+  %a1 = load i1, i1* %a
+  br i1 %a1, label %iftrue, label %iffalse
+
+iftrue:                                           ; preds = %ifstart
+  %a2 = load i1, i1* %a
+  %zexttmp = zext i1 %a2 to i32
+  call void @print_int(i32 %zexttmp)
+  br label %iffalse
+
+iffalse:                                          ; preds = %iftrue, %ifstart
+  br label %ifstart3
+
+ifstart3:                                         ; preds = %iffalse
+  %b6 = load i1, i1* %b
+  br i1 %b6, label %iftrue4, label %iffalse5
+
+iftrue4:                                          ; preds = %ifstart3
+  %b7 = load i1, i1* %b
+  %zexttmp8 = zext i1 %b7 to i32
+  call void @print_int(i32 %zexttmp8)
+  br label %iffalse5
+
+iffalse5:                                         ; preds = %iftrue4, %ifstart3
+  br label %ifstart9
+
+ifstart9:                                         ; preds = %iffalse5
+  %c12 = load i1, i1* %c
+  br i1 %c12, label %iftrue10, label %iffalse11
+
+iftrue10:                                         ; preds = %ifstart9
+  %c13 = load i1, i1* %c
+  %zexttmp14 = zext i1 %c13 to i32
+  call void @print_int(i32 %zexttmp14)
+  br label %iffalse11
+
+iffalse11:                                        ; preds = %iftrue10, %ifstart9
+  br label %ifstart15
+
+ifstart15:                                        ; preds = %iffalse11
+  %d18 = load i1, i1* %d
+  br i1 %d18, label %iftrue16, label %iffalse17
+
+iftrue16:                                         ; preds = %ifstart15
+  %d19 = load i1, i1* %d
+  %zexttmp20 = zext i1 %d19 to i32
+  call void @print_int(i32 %zexttmp20)
+  br label %iffalse17
+
+iffalse17:                                        ; preds = %iftrue16, %ifstart15
+  ret i32 0
+}
+assembling to bitcode:/usr/lib/llvm-7/bin/llvm-as "llvm/ywa340/bbooleq.llvm" -o "llvm/ywa340/bbooleq.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-7/bin/llc "llvm/ywa340/bbooleq.llvm.bc" -o "llvm/ywa340/bbooleq.llvm.s" ... ok
+linking:clang -o "llvm/ywa340/bbooleq.llvm.exec" "llvm/ywa340/bbooleq.llvm.s" "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c" ... ok
+running:llvm/ywa340/bbooleq.llvm.exec ... ok

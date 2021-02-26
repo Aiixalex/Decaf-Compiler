@@ -1,0 +1,11 @@
+; ModuleID = 'QuickSort'
+source_filename = "DecafComp"
+
+@a = internal global i32 3
+@b = internal global i32 3
+@c = internal global i32 3
+
+define void @main() {
+entry:
+  ret void
+}

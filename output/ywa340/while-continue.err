@@ -1,0 +1,52 @@
+output prefix: llvm/ywa340/while-continue
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... ok
+; ModuleID = 'C'
+source_filename = "DecafComp"
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  %i = alloca i32
+  store i32 0, i32* %i
+  store i32 0, i32* %i
+  br label %whilestart
+
+whilestart:                                       ; preds = %iffalse, %iftrue, %entry
+  %i1 = load i32, i32* %i
+  %lttmp = icmp slt i32 %i1, 10
+  br i1 %lttmp, label %whiletrue, label %whileend
+
+whiletrue:                                        ; preds = %whilestart
+  %i2 = load i32, i32* %i
+  %addtmp = add i32 %i2, 1
+  store i32 %addtmp, i32* %i
+  br label %ifstart
+
+whileend:                                         ; preds = %whilestart
+  ret i32 0
+
+ifstart:                                          ; preds = %whiletrue
+  %i3 = load i32, i32* %i
+  %modtmp = srem i32 %i3, 2
+  %neqtmp = icmp ne i32 %modtmp, 0
+  br i1 %neqtmp, label %iftrue, label %iffalse
+
+iftrue:                                           ; preds = %ifstart
+  br label %whilestart
+  br label %iffalse
+
+iffalse:                                          ; preds = %iftrue, %ifstart
+  %i4 = load i32, i32* %i
+  call void @print_int(i32 %i4)
+  br label %whilestart
+}
+assembling to bitcode:/usr/lib/llvm-7/bin/llvm-as "llvm/ywa340/while-continue.llvm" -o "llvm/ywa340/while-continue.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-7/bin/llc "llvm/ywa340/while-continue.llvm.bc" -o "llvm/ywa340/while-continue.llvm.s" ... ok
+linking:clang -o "llvm/ywa340/while-continue.llvm.exec" "llvm/ywa340/while-continue.llvm.s" "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c" ... ok
+running:llvm/ywa340/while-continue.llvm.exec ... ok

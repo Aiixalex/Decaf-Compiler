@@ -1,0 +1,24 @@
+output prefix: llvm/test/aqs
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... ok
+; ModuleID = 'QuickSort'
+source_filename = "DecafComp"
+
+@x = internal global i32 0
+
+declare void @print_string(i8*)
+
+declare void @print_int(i32)
+
+define void @main() {
+entry:
+  ret void
+}
+assembling to bitcode:/usr/lib/llvm-7/bin/llvm-as "llvm/test/aqs.llvm" -o "llvm/test/aqs.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-7/bin/llc "llvm/test/aqs.llvm.bc" -o "llvm/test/aqs.llvm.s" ... ok
+linking:clang -o "llvm/test/aqs.llvm.exec" "llvm/test/aqs.llvm.s" "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c" ... ok
+running:llvm/test/aqs.llvm.exec ... non-zero return value (64)

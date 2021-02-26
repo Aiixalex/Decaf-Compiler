@@ -1,0 +1,55 @@
+; ModuleID = 'Test'
+source_filename = "DecafComp"
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  %x = alloca i32
+  store i32 0, i32* %x
+  %y = alloca i32
+  store i32 0, i32* %y
+  %z = alloca i32
+  store i32 0, i32* %z
+  store i32 0, i32* %x
+  store i32 0, i32* %y
+  store i32 0, i32* %z
+  br label %ifstart
+
+ifstart:                                          ; preds = %entry
+  %x1 = load i32, i32* %x
+  %eqtmp = icmp eq i32 %x1, 0
+  br i1 %eqtmp, label %iftrue, label %iffalse
+
+iftrue:                                           ; preds = %ifstart
+  %x2 = load i32, i32* %x
+  call void @print_int(i32 %x2)
+  %y3 = load i32, i32* %y
+  call void @print_int(i32 %y3)
+  %z4 = load i32, i32* %z
+  call void @print_int(i32 %z4)
+  br label %iffalse
+
+iffalse:                                          ; preds = %iftrue, %ifstart
+  store i32 1, i32* %x
+  store i32 1, i32* %y
+  store i32 1, i32* %z
+  br label %ifstart5
+
+ifstart5:                                         ; preds = %iffalse
+  %x8 = load i32, i32* %x
+  %eqtmp9 = icmp eq i32 %x8, 1
+  br i1 %eqtmp9, label %iftrue6, label %iffalse7
+
+iftrue6:                                          ; preds = %ifstart5
+  %x10 = load i32, i32* %x
+  call void @print_int(i32 %x10)
+  %y11 = load i32, i32* %y
+  call void @print_int(i32 %y11)
+  %z12 = load i32, i32* %z
+  call void @print_int(i32 %z12)
+  br label %iffalse7
+
+iffalse7:                                         ; preds = %iftrue6, %ifstart5
+  ret i32 0
+}

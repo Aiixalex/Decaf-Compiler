@@ -1,0 +1,47 @@
+output prefix: llvm/test/zero-init2
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... ok
+; ModuleID = 'C'
+source_filename = "DecafComp"
+
+declare void @print_int(i32)
+
+declare void @print_string(i8*)
+
+define i32 @main() {
+entry:
+  %i = alloca i32
+  store i32 0, i32* %i
+  %b = alloca i1
+  store i1 false, i1* %b
+  br label %whilestart
+
+whilestart:                                       ; preds = %whiletrue, %entry
+  br i1 true, label %whiletrue, label %whileend
+
+whiletrue:                                        ; preds = %whilestart
+  %i1 = alloca i32
+  store i32 0, i32* %i1
+  %b2 = alloca i1
+  store i1 false, i1* %b2
+  store i32 13, i32* %i1
+  store i1 true, i1* %b2
+  br label %whileend
+  br label %whilestart
+
+whileend:                                         ; preds = %whiletrue, %whilestart
+  %i3 = load i32, i32* %i
+  call void @print_int(i32 %i3)
+  %b4 = load i1, i1* %b
+  %zexttmp = zext i1 %b4 to i32
+  call void @print_int(i32 %zexttmp)
+  ret i32 0
+}
+assembling to bitcode:/usr/lib/llvm-7/bin/llvm-as "llvm/test/zero-init2.llvm" -o "llvm/test/zero-init2.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-7/bin/llc "llvm/test/zero-init2.llvm.bc" -o "llvm/test/zero-init2.llvm.s" ... ok
+linking:clang -o "llvm/test/zero-init2.llvm.exec" "llvm/test/zero-init2.llvm.s" "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c" ... ok
+running:llvm/test/zero-init2.llvm.exec ... ok

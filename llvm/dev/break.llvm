@@ -1,0 +1,17 @@
+; ModuleID = 'C'
+source_filename = "DecafComp"
+
+define void @f() {
+entry:
+  br label %whilestart
+
+whilestart:                                       ; preds = %whiletrue, %entry
+  br i1 true, label %whiletrue, label %whileend
+
+whiletrue:                                        ; preds = %whilestart
+  br label %whileend
+  br label %whilestart
+
+whileend:                                         ; preds = %whiletrue, %whilestart
+  ret void
+}

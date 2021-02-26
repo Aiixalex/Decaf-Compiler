@@ -1,0 +1,48 @@
+output prefix: llvm/dev/expr-testfile-7
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... ok
+; ModuleID = 'Test'
+source_filename = "DecafComp"
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  %x = alloca i32
+  store i32 0, i32* %x
+  %y = alloca i1
+  store i1 false, i1* %y
+  store i32 958, i32* %x
+  %y1 = alloca i32
+  store i32 0, i32* %y1
+  %x2 = load i32, i32* %x
+  %multmp = mul i32 %x2, -30
+  %addtmp = add i32 %multmp, 80
+  store i32 %addtmp, i32* %y1
+  %y3 = load i32, i32* %y1
+  %negtmp = sub i32 0, %y3
+  store i32 %negtmp, i32* %x
+  store i1 false, i1* %y
+  br label %ifstart
+
+ifstart:                                          ; preds = %entry
+  %y4 = load i1, i1* %y
+  %nottmp = xor i1 %y4, true
+  br i1 %nottmp, label %iftrue, label %iffalse
+
+iftrue:                                           ; preds = %ifstart
+  %x5 = load i32, i32* %x
+  call void @print_int(i32 %x5)
+  br label %iffalse
+
+iffalse:                                          ; preds = %iftrue, %ifstart
+  ret i32 0
+}
+assembling to bitcode:/usr/lib/llvm-7/bin/llvm-as "llvm/dev/expr-testfile-7.llvm" -o "llvm/dev/expr-testfile-7.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-7/bin/llc "llvm/dev/expr-testfile-7.llvm.bc" -o "llvm/dev/expr-testfile-7.llvm.s" ... ok
+linking:clang -o "llvm/dev/expr-testfile-7.llvm.exec" "llvm/dev/expr-testfile-7.llvm.s" "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c" ... ok
+running:llvm/dev/expr-testfile-7.llvm.exec ... ok

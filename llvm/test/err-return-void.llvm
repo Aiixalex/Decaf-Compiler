@@ -1,0 +1,22 @@
+; ModuleID = 'retvalue'
+source_filename = "DecafComp"
+
+define void @foo() {
+entry:
+  ret void
+}
+
+define i32 @main() {
+entry:
+  br label %ifstart
+
+ifstart:                                          ; preds = %entry
+  call void @foo()
+  br void <badref>, label %iftrue, label %iffalse
+
+iftrue:                                           ; preds = %ifstart
+  br label %iffalse
+
+iffalse:                                          ; preds = %iftrue, %ifstart
+  ret i32 0
+}

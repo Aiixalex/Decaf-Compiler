@@ -1,0 +1,50 @@
+output prefix: llvm/test/bs_mod_small
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... ok
+; ModuleID = 'bs_mod_small'
+source_filename = "DecafComp"
+
+@globalstring = private unnamed_addr constant [2 x i8] c"\0A\00"
+@globalstring.1 = private unnamed_addr constant [2 x i8] c"\0A\00"
+@globalstring.2 = private unnamed_addr constant [2 x i8] c"\0A\00"
+
+declare void @print_string(i8*)
+
+declare void @print_int(i32)
+
+define i1 @main() {
+entry:
+  %z = alloca i32
+  store i32 0, i32* %z
+  %y = alloca i32
+  store i32 0, i32* %y
+  %x = alloca i32
+  store i32 0, i32* %x
+  store i32 4, i32* %z
+  store i32 3, i32* %y
+  %z1 = load i32, i32* %z
+  %y2 = load i32, i32* %y
+  %lstmp = shl i32 %z1, %y2
+  store i32 %lstmp, i32* %x
+  %x3 = load i32, i32* %x
+  %rstmp = lshr i32 %x3, 2
+  call void @print_int(i32 %rstmp)
+  call void @print_string(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @globalstring, i32 0, i32 0))
+  %x4 = load i32, i32* %x
+  %rstmp5 = lshr i32 %x4, 5
+  call void @print_int(i32 %rstmp5)
+  call void @print_string(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @globalstring.1, i32 0, i32 0))
+  %x6 = load i32, i32* %x
+  %rstmp7 = lshr i32 %x6, 6
+  call void @print_int(i32 %rstmp7)
+  call void @print_string(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @globalstring.2, i32 0, i32 0))
+  ret i1 false
+}
+assembling to bitcode:/usr/lib/llvm-7/bin/llvm-as "llvm/test/bs_mod_small.llvm" -o "llvm/test/bs_mod_small.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-7/bin/llc "llvm/test/bs_mod_small.llvm.bc" -o "llvm/test/bs_mod_small.llvm.s" ... ok
+linking:clang -o "llvm/test/bs_mod_small.llvm.exec" "llvm/test/bs_mod_small.llvm.s" "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c" ... ok
+running:llvm/test/bs_mod_small.llvm.exec ... ok

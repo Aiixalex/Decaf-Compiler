@@ -1,0 +1,29 @@
+output prefix: llvm/dev/onlyfields
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... ok
+; ModuleID = 'QuickSort'
+source_filename = "DecafComp"
+
+@x = internal global i32 0
+assembling to bitcode:/usr/lib/llvm-7/bin/llvm-as "llvm/dev/onlyfields.llvm" -o "llvm/dev/onlyfields.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-7/bin/llc "llvm/dev/onlyfields.llvm.bc" -o "llvm/dev/onlyfields.llvm.s" ... ok
+linking:clang -o "llvm/dev/onlyfields.llvm.exec" "llvm/dev/onlyfields.llvm.s" "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c" ... non-zero return value (1)
+/usr/bin/ld: /usr/bin/../lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crt1.o: in function `_start':
+(.text+0x20): undefined reference to `main'
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+running:llvm/dev/onlyfields.llvm.exec ... Traceback (most recent call last):
+  File "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/llvm-run", line 172, in <module>
+    result &= run("running", "%s.llvm.exec" % (out_prefix), ".run", None, out_prefix)
+  File "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/llvm-run", line 90, in run
+    retval = subprocess.call(shlex.split(cmd), stdin=infile, stdout=outoutfile, stderr=outerrfile)
+  File "/usr/lib/python3.7/subprocess.py", line 323, in call
+    with Popen(*popenargs, **kwargs) as p:
+  File "/usr/lib/python3.7/subprocess.py", line 775, in __init__
+    restore_signals, start_new_session)
+  File "/usr/lib/python3.7/subprocess.py", line 1522, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'llvm/dev/onlyfields.llvm.exec': 'llvm/dev/onlyfields.llvm.exec'

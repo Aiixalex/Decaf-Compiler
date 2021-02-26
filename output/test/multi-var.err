@@ -1,0 +1,22 @@
+output prefix: llvm/test/multi-var
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... ok
+; ModuleID = 'QuickSort'
+source_filename = "DecafComp"
+
+@a = internal global i32 0
+@b = internal global i32 0
+@c = internal global i32 0
+
+define void @main() {
+entry:
+  ret void
+}
+assembling to bitcode:/usr/lib/llvm-7/bin/llvm-as "llvm/test/multi-var.llvm" -o "llvm/test/multi-var.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-7/bin/llc "llvm/test/multi-var.llvm.bc" -o "llvm/test/multi-var.llvm.s" ... ok
+linking:clang -o "llvm/test/multi-var.llvm.exec" "llvm/test/multi-var.llvm.s" "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c" ... ok
+running:llvm/test/multi-var.llvm.exec ... non-zero return value (64)

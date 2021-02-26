@@ -1,0 +1,1 @@
+clang: error: no such file or directory: 'llvm/test/err-return-void-1.llvm.s'

@@ -1,0 +1,40 @@
+output prefix: llvm/dev/boolneq
+llvmas: /usr/lib/llvm-7/bin/llvm-as
+llc: /usr/lib/llvm-7/bin/llc
+cc: clang
+codegen: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp
+stdlib: /home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c
+generating llvm code:/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decafcomp ... ok
+; ModuleID = 'Test'
+source_filename = "DecafComp"
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  %x = alloca i32
+  store i32 0, i32* %x
+  call void @print_int(i32 0)
+  call void @print_int(i32 1)
+  call void @print_int(i32 1)
+  call void @print_int(i32 0)
+  store i32 3, i32* %x
+  br label %ifstart
+
+ifstart:                                          ; preds = %entry
+  %x1 = load i32, i32* %x
+  %eqtmp = icmp eq i32 %x1, 3
+  br i1 %eqtmp, label %iftrue, label %iffalse
+
+iftrue:                                           ; preds = %ifstart
+  %x2 = load i32, i32* %x
+  call void @print_int(i32 %x2)
+  br label %iffalse
+
+iffalse:                                          ; preds = %iftrue, %ifstart
+  ret i32 0
+}
+assembling to bitcode:/usr/lib/llvm-7/bin/llvm-as "llvm/dev/boolneq.llvm" -o "llvm/dev/boolneq.llvm.bc" ... ok
+converting to native code:/usr/lib/llvm-7/bin/llc "llvm/dev/boolneq.llvm.bc" -o "llvm/dev/boolneq.llvm.s" ... ok
+linking:clang -o "llvm/dev/boolneq.llvm.exec" "llvm/dev/boolneq.llvm.s" "/home/alex_wang_10/repos/cmpt379-1207-ywa340/decafcomp/answer/decaf-stdlib.c" ... ok
+running:llvm/dev/boolneq.llvm.exec ... ok
